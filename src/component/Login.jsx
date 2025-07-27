@@ -1,9 +1,13 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, } from "react-redux";
 import axios from "axios";
+import { addUser } from "../utils/userSlice";
+import { API_URL } from "../utils/constant";
 const Login = () => {
 
   const [credential,setCredential] = useState({email:'anish@gmail.com',password:'Ajay1234@'});
+  const navigate = useNavigate();
   const handleCredentials = (e)=>{
      const { name, value } = e.target;
     setCredential(prevUser => ({
@@ -11,15 +15,19 @@ const Login = () => {
       [name]: value,
     }));
   }
+  const [loginError,setLoginError] = useState(""); 
+  const dispatch = useDispatch();
   const handleLogin = async () =>{
     try{
-     const result = await axios.post('http://localhost:8080/login',credential,
+     const result = await axios.post(API_URL + "login",credential,
       {withCredentials:true}
      );
-     console.log(result)
+     dispatch(addUser(result?.data));
+     navigate('/');
     }
     catch(err){
-        console.error(err);
+        setLoginError(err?.response?.data || "something went wrong");
+        // console.error(err);
     }
   } 
   return (
@@ -52,6 +60,7 @@ const Login = () => {
             />
           </div>
           <div className="login-btn mt-2">
+            <p className="  text-red-500">{loginError}</p>
             <button onClick={handleLogin} className="btn w-full bg-[#1A77F2] text-white border-[#005fd8]">
               Login
             </button>
