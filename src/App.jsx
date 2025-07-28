@@ -5,6 +5,7 @@ import Profile from "./component/Profile";
 import Home from "./component/Home";
 import { Provider } from "react-redux";
 import appStore from "./utils/appStore";
+import ProfileEdit from "./component/ProfileEdit";
 const App = () => {
   return (
     <>
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: '/profile',
         element: <Profile />
+      },
+      {
+        path: '/profileEdit',
+        element: <ProfileEdit />
       },
     ]
   },
