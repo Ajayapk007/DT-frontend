@@ -18,7 +18,7 @@ const Header = () => {
     } 
   } 
   return user && (
-        <div className="navbar bg-white shadow-sm">
+        <div className="navbar bg-white shadow-lg ">
         <div className="flex-1">
           <Link to={'/'} className="btn btn-ghost text-xl">Pal</Link>
         </div>

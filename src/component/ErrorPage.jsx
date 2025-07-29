@@ -2,7 +2,7 @@ import React from 'react';
 
 const ErrorPage = ({ errorCode = "Error", message = "Something went wrong.", onRetry }) => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <div className="min-h-fit mt-6 flex items-center justify-center bg-gray-100 px-4">
       <div className="bg-white p-8 rounded-lg shadow-md text-center max-w-md w-full">
         <h1 className="text-6xl font-bold text-red-600">{errorCode}</h1>
         <p className="mt-4 text-gray-700 text-lg">{message}</p>

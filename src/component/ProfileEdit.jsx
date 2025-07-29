@@ -3,14 +3,16 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { API_URL } from "../utils/constant";
 import { addUser } from "../utils/userSlice";
+import { FaUpload } from "react-icons/fa";
 
 export default function ProfileEdit() {
   const user = useSelector((store) => store.user);
- const [forms, setForm] = useState({
-  firstName: user.firstName ?? '',
-  email: user.email ?? '',
-  bio: user.about ?? '',
-  avtar: user.photoURL ?? '',
+  const [showtoast,setToast] = useState(false);
+  const [forms, setForm] = useState({
+    firstName: user.firstName ?? '',
+    email: user.email ?? '',
+    bio: user.about ?? '',
+    photoURL: user.photoURL ?? '',
   });
 
   useEffect(() => {
@@ -18,7 +20,7 @@ export default function ProfileEdit() {
       firstName: user.firstName,
       email: user.email,
       about: user.about,
-      avtar: user.photoURL,
+      photoURL: user.photoURL,
     });
   }, [user]);
 
@@ -35,10 +37,17 @@ export default function ProfileEdit() {
         withCredentials: true,
       });
       dispatch(addUser(data.data));
+      setToast(true);
+      setTimeout(() => {
+        setToast(false);
+      }, 2000);
     } catch (error) {
       console.log(error);
     }
   };
+  const handleURL = () => {
+    // return <h1></h1>
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex">
@@ -49,14 +58,16 @@ export default function ProfileEdit() {
           className="bg-white p-8 rounded shadow max-w-lg mx-auto"
         >
           <div className="avtar flex  flex-col  items-center">
-             <img src={forms.avtar}
-             alt="Avatar"
-             className="w-36  h-36 rounded-full mr-3 object-cover"
-             />
-          <h3 className="text-2xl mt-2 font-semibold mb-6">Edit Profile</h3>
+            <div className=" flex items-center">
+              <img src={forms.photoURL}
+                alt="Avatar"
+                className="w-36  h-36 rounded-full mr-3 object-cover"
+              /> <FaUpload onClick={handleURL} />
+            </div>
+            <h3 className="text-2xl mt-2 font-semibold mb-6">Edit Profile</h3>
           </div>
           {/* Inputs */}
-          {["firstName", "email"].map((field) => (
+          {["firstName", "email", "photoURL"].map((field) => (
             <div key={field} className="mb-4">
               <label className="block text-sm font-medium text-gray-700 capitalize">
                 {field}
@@ -82,7 +93,7 @@ export default function ProfileEdit() {
             />
           </div>
 
-          <button 
+          <button
             type="submit"
             className="bg-blue-500 text-white px-4 py-2 rounded font-medium hover:bg-blue-600"
           >
@@ -90,6 +101,11 @@ export default function ProfileEdit() {
           </button>
         </form>
       </main>
+      { showtoast && <div className="toast toast-top toast-center mt-12 ">
+        <div className="alert alert-success ">
+          <span>Message sent successfully.</span>
+        </div>
+      </div>}
     </div>
   );
 }
